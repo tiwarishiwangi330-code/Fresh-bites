@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshBites - Food Delivery & Street Stalls</title>
+    <!-- Link to external CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-utensils"></i> Fresh<span>Bites</span>
+        </div>
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search dishes, restaurants, or stalls...">
+        </div>
+        <div class="nav-actions">
+            <button class="cart-btn" id="cartBtn">
+                <i class="fa-solid fa-bag-shopping"></i> Cart 
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Delicious Food & Local Stalls, Delivered Fast</h1>
+            <p>Order from your favorite neighborhood restaurants and authentic street food vendors.</p>
+        </div>
+    </section>
+
+    <!-- ================= CATEGORIES ================= -->
+    <section class="categories-section">
+        <h2>Explore Categories</h2>
+        <div class="category-list">
+            <button class="cat-btn active" data-category="all">All</button>
+            <button class="cat-btn" data-category="restaurant">Restaurants</button>
+            <button class="cat-btn" data-category="stall">Street Stalls</button>
+            <button class="cat-btn" data-category="fast-food">Fast Food</button>
+            <button class="cat-btn" data-category="dessert">Desserts</button>
+        </div>
+    </section>
+
+    <!-- ================= STREET FOOD STALLS FEATURE SECTION ================= -->
+    <section class="section" id="stallsSection">
+        <div class="section-title">
+            <h2>🔥 Featured Street Food Stalls</h2>
+            <p>Authentic local flavors crafted right on the street corner</p>
+        </div>
+        <div class="food-grid" id="stallsGrid">
+            <!-- Stalls loaded dynamically via JavaScript -->
+        </div>
+    </section>
+
+    <!-- ================= RESTAURANTS & POPULAR DISHES ================= -->
+    <section class="section">
+        <div class="section-title">
+            <h2>🍽️ Popular Restaurants & Dishes</h2>
+            <p>Top-rated meals delivered right to your doorstep</p>
+        </div>
+        <div class="food-grid" id="restaurantsGrid">
+            <!-- Restaurants loaded dynamically via JavaScript -->
+        </div>
+    </section>
+
+    <!-- ================= SHOPPING CART DRAWER ================= -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Order</h3>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart-msg">Your cart is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Column 1: Brand & Socials -->
+            <div class="footer-col">
+                <div class="logo footer-logo">
+                    <i class="fa-solid fa-utensils"></i> Fresh<span>Bites</span>
+                </div>
+                <p class="footer-desc">Bringing delicious neighborhood meals and authentic street food straight to your doorstep.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+
+            <!-- Column 2: Quick Links -->
+            <div class="footer-col">
+                <h4>About FreshBites</h4>
+                <ul>
+                    <li><a href="#">Who We Are</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Investor Relations</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Partner Links -->
+            <div class="footer-col">
+                <h4>Partner With Us</h4>
+                <ul>
+                    <li><a href="#">Restaurants</a></li>
+                    <li><a href="#">Street Food Stalls</a></li>
+                    <li><a href="#">Get Delivery App</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Newsletter -->
+            <div class="footer-col">
+                <h4>Stay Updated</h4>
+                <p>Subscribe for exclusive discount offers and new stall listings.</p>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 FreshBites Technologies Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Food Data Source (18 Items)
+        const foodItems = [
+            { id: 1, name: "Mumbai Style Masala Pav", category: "stall", price: 5.99, rating: 4.8, image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=600&q=80", description: "Butter-toasted soft buns served with a spicy, savory vegetable mash.", badge: "Street Stall" },
+            { id: 2, name: "Crispy Street Pani Puri", category: "stall", price: 4.50, rating: 4.9, image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80", description: "Hollow crisp puris filled with spiced potatoes, chickpeas, and tangy flavored water.", badge: "Street Stall" },
+            { id: 3, name: "Bangkok Pad Thai Noodles", category: "stall", price: 7.99, rating: 4.7, image: "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=600&q=80", description: "Stir-fried rice noodles tossed with peanuts, bean sprouts, and lime.", badge: "Street Stall" },
+            { id: 4, name: "Delhi Special Chole Bhature", category: "stall", price: 6.99, rating: 4.9, image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80", description: "Fluffy fried bread served with rich, spicy chickpea curry and pickles.", badge: "Street Stall" },
+            { id: 5, name: "Mexican Street Tacos", category: "stall", price: 6.50, rating: 4.8, image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80", description: "Soft corn tortillas loaded with seasoned grilled meat, onions, and cilantro.", badge: "Street Stall" },
+            { id: 6, name: "Osaka Style Takoyaki", category: "stall", price: 7.50, rating: 4.6, image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80", description: "Ball-shaped Japanese snacks filled with minced octopus, drizzled with savory sauce.", badge: "Street Stall" },
+            { id: 7, name: "Classic Cheeseburger", category: "fast-food", price: 8.99, rating: 4.6, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80", description: "Juicy beef patty with melted cheddar, fresh lettuce, and special sauce.", badge: "Restaurant" },
+            { id: 8, name: "Wood-Fired Pepperoni Pizza", category: "restaurant", price: 12.99, rating: 4.8, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80", description: "Authentic crust topped with spicy pepperoni, mozzarella, and basil.", badge: "Restaurant" },
+            { id: 9, name: "Crispy Fried Chicken Bucket", category: "fast-food", price: 14.99, rating: 4.7, image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80", description: "Golden-brown crunchy chicken pieces seasoned with secret herbs and spices.", badge: "Restaurant" },
+            { id: 10, name: "Creamy Alfredo Pasta", category: "restaurant", price: 11.50, rating: 4.5, image: "https://images.unsplash.com/photo-1645112411341-6c4fd0237148?auto=format&fit=crop&w=600&q=80", description: "Fettuccine pasta tossed in rich garlic parmesan cream sauce with herbs.", badge: "Restaurant" },
+            { id: 11, name: "Loaded Bacon & Cheese Fries", category: "fast-food", price: 5.99, rating: 4.6, image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80", description: "Crispy french fries smothered in melted cheese sauce and crispy bacon bits.", badge: "Restaurant" },
+            { id: 12, name: "Fresh Avocado Garden Salad", category: "restaurant", price: 9.50, rating: 4.4, image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80", description: "Crisp greens, cherry tomatoes, cucumbers, and sliced avocado with lemon dressing.", badge: "Restaurant" },
+            { id: 13, name: "BBQ Grilled Chicken Wings", category: "fast-food", price: 9.99, rating: 4.8, image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=600&q=80", description: "Tender chicken wings glazed in smoky sweet barbecue sauce.", badge: "Restaurant" },
+            { id: 14, name: "Double Decker Smash Burger", category: "fast-food", price: 10.99, rating: 4.9, image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80", description: "Two smashed beef patties, double cheese, caramelized onions in a toasted brioche bun.", badge: "Restaurant" },
+            { id: 15, name: "Berry Cream Cheesecake", category: "dessert", price: 6.50, rating: 4.9, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80", description: "Smooth New York style cheesecake topped with fresh mixed berries.", badge: "Dessert" },
+            { id: 16, name: "Warm Chocolate Lava Cake", category: "dessert", price: 6.99, rating: 4.9, image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80", description: "Rich chocolate cake with a gooey, molten chocolate center served with vanilla ice cream.", badge: "Dessert" },
+            { id: 17, name: "Classic Strawberry Milkshake", category: "dessert", price: 4.99, rating: 4.7, image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80", description: "Thick and creamy strawberry shake topped with whipped cream and sprinkles.", badge: "Dessert" },
+            { id: 18, name: "Artisanal Mango Iced Smoothie", category: "dessert", price: 5.50, rating: 4.8, image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80", description: "Refreshing blended Alphonso mango smoothie with a touch of mint.", badge: "Dessert" }
+        ];
+
+        let cart = [];
+
+        const stallsGrid = document.getElementById('stallsGrid');
+        const restaurantsGrid = document.getElementById('restaurantsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryButtons = document.querySelectorAll('.cat-btn');
+
+        const cartBtn = document.getElementById('cartBtn');
+        const cartDrawer = document.getElementById('cartDrawer');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const closeCart = document.getElementById('closeCart');
+        const cartItemsContainer = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        function displayFoodItems(itemsToDisplay) {
+            stallsGrid.innerHTML = '';
+            restaurantsGrid.innerHTML = '';
+
+            const stallItems = itemsToDisplay.filter(item => item.category === 'stall');
+            const otherItems = itemsToDisplay.filter(item => item.category !== 'stall');
+
+            const stallsSection = document.getElementById('stallsSection');
+            stallsSection.style.display = stallItems.length === 0 ? 'none' : 'block';
+
+            stallItems.forEach(item => stallsGrid.appendChild(createFoodCard(item)));
+            otherItems.forEach(item => restaurantsGrid.appendChild(createFoodCard(item)));
+        }
+
+        function createFoodCard(item) {
+            const card = document.createElement('div');
+            card.classList.add('food-card');
+            const isStall = item.category === 'stall';
+
+            card.innerHTML = `
+                <div class="food-img-container">
+                    <span class="badge ${isStall ? 'stall' : ''}">${item.badge}</span>
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="food-details">
+                    <div class="food-header">
+                        <h3 class="food-title">${item.name}</h3>
+                        <span class="food-price">$${item.price.toFixed(2)}</span>
+                    </div>
+                    <p class="food-desc">${item.description}</p>
+                    <div class="food-footer">
+                        <span class="food-rating"><i class="fa-solid fa-star"></i> ${item.rating}</span>
+                        <button class="add-to-cart-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function addToCart(id) {
+            const product = foodItems.find(item => item.id === id);
+            const existingItem = cart.find(item => item.id === id);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            openCartDrawer();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalCount;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `<p class="empty-cart-msg">Your cart is empty.</p>`;
+                cartTotal.textContent = '$0.00';
+                return;
+            }
+
+            cartItemsContainer.innerHTML = '';
+            let totalPrice = 0;
+
+            cart.forEach(item => {
+                totalPrice += item.price * item.quantity;
+                const row = document.createElement('div');
+                row.classList.add('cart-item-row');
+                row.innerHTML = `
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>$${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                    <div class="cart-item-actions">
+                        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(row);
+            });
+
+            cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+        }
+
+        function changeQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function openCartDrawer() {
+            cartDrawer.classList.add('active');
+            cartOverlay.classList.add('active');
+        }
+
+        function closeCartDrawer() {
+            cartDrawer.classList.remove('active');
+            cartOverlay.classList.remove('active');
+        }
+
+        cartBtn.addEventListener('click', openCartDrawer);
+        closeCart.addEventListener('click', closeCartDrawer);
+        cartOverlay.addEventListener('click', closeCartDrawer);
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = foodItems.filter(item => 
+                item.name.toLowerCase().includes(term) || 
+                item.description.toLowerCase().includes(term)
+            );
+            displayFoodItems(filtered);
+        });
+
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const category = btn.getAttribute('data-category');
+                if (category === 'all') {
+                    displayFoodItems(foodItems);
+                } else {
+                    const filtered = foodItems.filter(item => item.category === category);
+                    displayFoodItems(filtered);
+                }
+            });
+        });
+
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            alert("Order placed successfully! Thank you for choosing FreshBites.");
+            cart = [];
+            updateCartUI();
+            closeCartDrawer();
+        });
+
+        displayFoodItems(foodItems);
+    </script>
+</body>
+</html>
